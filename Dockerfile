@@ -15,6 +15,9 @@ RUN if [ "$INSTALL_GIT" = "true" ]; then \
     git; \
     fi
 
+# Install API dependencies
+RUN pip --no-cache-dir install fastapi uvicorn requests
+
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +25,11 @@ WORKDIR /app
 COPY . /app
 RUN pip --no-cache-dir install \
     /app/packages/markitdown[all] \
-    /app/packages/markitdown-sample-plugin
+    /app/packages/markitdown-sample-plugin \
+    /app/packages/markitdown-api
+
+# Expose API port
+EXPOSE 8000
 
 # Default USERID and GROUPID
 ARG USERID=nobody
@@ -30,4 +37,5 @@ ARG GROUPID=nogroup
 
 USER $USERID:$GROUPID
 
-ENTRYPOINT [ "markitdown" ]
+# Run the API server using the module path
+CMD ["uvicorn", "markitdown_api.api:app", "--host", "0.0.0.0", "--port", "8000"]

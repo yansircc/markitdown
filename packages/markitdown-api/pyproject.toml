@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "markitdown-api"
+version = "0.1.0"
+description = "API server for MarkItDown"
+authors = [
+    {name = "MarkItDown Contributors", email = "info@example.com"},
+]
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "requests",
+    "markitdown",
+]
+requires-python = ">=3.8"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "mypy",
+] 
